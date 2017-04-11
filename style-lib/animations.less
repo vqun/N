@@ -1,0 +1,205 @@
+@in-x: 105vw;
+@in-y: 105vh;
+.animated {
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-duration: .5s;
+}
+
+.infinited {
+  animation-iteration-count: infinite;
+}
+
+// <微动>
+@keyframes up-down {
+  0% {
+    transform: translateY(7%);
+  }
+  50% {
+    transform: translateY(-7%);
+  }
+  100% {
+    transform: translateY(7%);
+  }
+}
+.up-down {
+  transform: translateY(20%);
+  animation-name: up-down;
+  animation-duration: 1.5s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.pulse {
+  animation-name: pulse;
+  animation-duration: 2s;
+}
+// </微动>
+
+// <渐入渐出>
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+.fade-in {
+  animation-name: fade-in;
+  animation-duration: 1s;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+.fade-out {
+  animation-name: fade-out;
+}
+// </渐入渐出>
+
+// <缩放进出>
+@keyframes scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: .3;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.scale-in {
+  animation-name: scale-in;
+}
+
+@keyframes scale-out {
+  to {
+    transform: scale(0);
+  }
+}
+.scale-out {
+  animation-name: scale-out;
+}
+// <缩放进出>
+
+// <滑动进出>
+// 右上角滑入
+@keyframes slide-in-top-right {
+  from {
+    transform: translateX(100%) translateY(-100%);
+  }
+}
+.slide-in-top-right {
+  animation-name: slide-in-top-right;
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-@in-x);
+  }
+}
+.slide-in-left {
+  animation-name: slide-in-left;
+}
+
+@keyframes slide-in-up {
+  from {
+    transform: translateY(@in-y);
+  }
+}
+.slide-in-up {
+  animation-name: slide-in-up;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(@in-x);
+  }
+}
+.slide-in-right {
+  animation-name: slide-in-right;
+}
+
+@keyframes slide-out-down {
+  to {
+    opacity: 0;
+    transform: translateY(@in-y);
+  }
+}
+.slide-out-down {
+  animation-name: slide-out-down;
+}
+
+@keyframes slide-out-up {
+  to {
+    opacity: 0;
+    transform: translateY(-@in-y);
+  }
+}
+.slide-out-up {
+  animation-name: slide-out-up;
+}
+
+@keyframes slide-out-left {
+  to {
+    opacity: 0;
+    transform: translateX(-@in-x);
+  }
+}
+.slide-out-left {
+  animation-name: slide-out-left;
+}
+
+@keyframes slide-out-right {
+  to {
+    opacity: 0;
+    transform: translateX(@in-x);
+  }
+}
+.slide-out-right {
+  animation-name: slide-out-right;
+}
+// </滑动进出>
+
+// 旋转进出
+@keyframes rotate-in {
+  0% {
+    opacity: 0;
+    transform: rotate(0);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.rotate-in {
+  animation-name: rotate-in;
+  animation-duration: .6s;
+}
+
+@keyframes rotate-scale-in {
+  0% {
+    transform: scale(0) rotate(0);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+.rotate-scale-in {
+  animation-name: rotate-scale-in;
+  animation-duration: 1s;
+}
