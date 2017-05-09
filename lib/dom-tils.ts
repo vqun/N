@@ -1,4 +1,4 @@
-export default function(selector, context) {
+function DomTils(selector, context = null) {
   if(context) {
     if(context.nodeType === 1) {
       return context.querySelectorAll(selector);
@@ -8,3 +8,5 @@ export default function(selector, context) {
   }
   return document.body.querySelectorAll(selector)
 }
+
+export default DomTils

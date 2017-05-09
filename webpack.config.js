@@ -4,33 +4,30 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const styleExtractor = new ExtractTextPlugin({ filename: 'styles/[name].css?v=[contenthash:8]', allChunks: true })
+const RESOLVED_EXTENSIONS = ['.ts', '.tsx', '.js', '.json']
 const baseConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'assets/[name].bundle.js'
   },
+  resolve: {
+    extensions: RESOLVED_EXTENSIONS
+  },
   module: {
     rules: [
       {
-        test: /\.js/,
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              ['env', {
-                "targets": {
-                  "browsers": ["last 5 versions"]
-                }
-              }]
-            ]
+        test: /\.tsx?$/,
+        use: [
+          'ts-loader',
+          {
+            loader: 'c-loader',
+            options: {
+              css: true,
+              postfix: 'less',
+              module: 'import'
+            }
           }
-        }, {
-          loader: 'c-loader',
-          options: {
-            css: true,
-            postfix: 'less',
-          },
-        }]
+        ]
       },
       {
         test: /\.(css|less)$/,
@@ -62,12 +59,12 @@ module.exports = (function() {
   const configs = [], base = path.resolve(__dirname, 'pages');
   const directories = fs.readdirSync(base);
   directories.forEach(function(dir) {
-    const ctx = path.resolve(base, dir), stat = fs.statSync(ctx);
+    const ctx = path.resolve(base, dir), stat = fs.statSync(ctx), ext = path.extname(dir), name = path.basename(dir, ext);
     if(stat.isFile()) {
-      path.extname(dir) === '.js' && configs.push(Object.assign(createBaseConfig(), {
+      RESOLVED_EXTENSIONS.indexOf(ext) !== -1 && configs.push(Object.assign(createBaseConfig(), {
         context: base,
         entry: {
-          [path.basename(dir, '.js')]: `./${dir}`
+          [name]: `./${name}`
         }
       }))
     } else {
@@ -83,8 +80,9 @@ module.exports = (function() {
 function produceEntries(base, prefix = '') {
   const files = fs.readdirSync(base);
   return files.reduce((prev, file) => {
-    const _file = path.resolve(base, file), name = `${prefix ? `${prefix}/` : ''}${file}`.replace(/\.js$/, ''), stat = fs.statSync(_file);
-    if(stat.isFile() && path.extname(file) === '.js') return Object.assign({}, prev, { [name]: `./${name}` });
+    const _file = path.resolve(base, file), ext = path.extname(file);
+    const name = `${prefix ? `${prefix}/` : ''}${path.basename(file, ext)}`, stat = fs.statSync(_file);
+    if(stat.isFile() && RESOLVED_EXTENSIONS.indexOf(ext) !== -1) return Object.assign({}, prev, { [name]: `./${name}` });
     if(stat.isDirectory()) return Object.assign(prev, produceEntries(_file, name))
     return prev
   }, {})

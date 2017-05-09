@@ -1,3 +1,5 @@
+import $ from './dom-tils';
+
 function addSlideTo(el, fn, callback) {
   var LEFT = 'Left', RIGHT = 'Right', UP = 'Up', DOWN = 'Down';
 
