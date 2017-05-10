@@ -1,7 +1,7 @@
 const path = require('path'), fs = require('fs')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const styleExtractor = new ExtractTextPlugin({ filename: 'styles/[name].css?v=[contenthash:8]', allChunks: true })
 const RESOLVED_EXTENSIONS = ['.ts', '.tsx', '.js', '.json']
@@ -38,20 +38,22 @@ const baseConfig = {
       },
       {
         test: /\.(jpe?g|png|gif|webp|ttf|woff2?|otf|eot|svg|docx?|pptx?|xlsx?|pdf)$/,
-        use: {
+        use: [{
           loader: 'url-loader',
           options: {
             limit: 10000,
             name: '[name].[ext]?v=[hash:8]',
           },
-        }
+        }]
       }
     ]
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin(),
     styleExtractor,
-    new HtmlWebpackPlugin()
+    new CopyWebpackPlugin([{
+      from: '**/*.html'
+    }])
   ]
 };
 
