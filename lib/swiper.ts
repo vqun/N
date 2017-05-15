@@ -1,8 +1,8 @@
 import $ from './dom-tils';
 
-function addSlideTo(el, fn, callback) {
-  var LEFT = 'Left', RIGHT = 'Right', UP = 'Up', DOWN = 'Down';
+const LEFT = 'Left', RIGHT = 'Right', UP = 'Up', DOWN = 'Down';
 
+export default function (el, fn, callback) {
   callback = callback || {};
   var touchInfo;
   $(el).on('touchstart', function(evt) {
