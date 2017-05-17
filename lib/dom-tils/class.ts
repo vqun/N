@@ -1,4 +1,5 @@
 import { $ } from './$'
+import { isArray } from './utils'
 
 $.fn.addClass = function(...classes) {
   if(classes.length > 0) {
@@ -23,6 +24,21 @@ $.fn.removeClass = function(...classes) {
   return this
 }
 
+$.fn.swapClass = function(oldClass, newClass) {
+  if(!isArray(oldClass)) {
+    oldClass = splitToArray(oldClass)
+  }
+  if(!isArray(newClass)) {
+    newClass = splitToArray(newClass)
+  }
+  this.removeClass(oldClass).addClass(newClass)
+}
+
 function clean(cls) {
   return cls.replace(/^\s+|\s+$/g, '').replace(/\s{2}/g, ' ')
+}
+
+function splitToArray(cls) {
+  if(cls)
+  return cls.replace(/^\s+|\s+$/g, '').split(/\s+/)
 }

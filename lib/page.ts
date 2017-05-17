@@ -1,6 +1,8 @@
 import $ from './dom-tils'
 import Swiper from './swiper'
 
+const Body = document.body
+
 class Page {
   private config = {}
   constructor(private page) {
@@ -10,14 +12,24 @@ class Page {
     const { name, o, i } = this.page.dataset
     this.config = { name, o, i }
   }
+  pageIn() {
+    const { o, i } = this.config;
+    this.page.swapClass(o, i)
+  }
+  pageOut() {
+    const { o, i } = this.config;
+    this.page.swapClass(i, o)
+  }
 }
 
 export default class Pageit {
   private pageEls = null
   private pages = []
-  private config = {}
-  constructor(el, container = '') {
-    this.pageEls = $(el, container)
+  private currentPage = null
+  private currentPageIndex = 0
+  private MaxPage = 0
+  constructor(el, private container = Body) {
+    this.pageEls = $(el, this.container)
     this.init()
   }
   init() {
@@ -27,7 +39,21 @@ export default class Pageit {
     this.run()
   }
   run() {
-    Swiper(this.pageEls, {
+    this.currentPage = this.pages[0]
+    this.MaxPage = this.pages.length
+    Swiper(this.container, {
+      swipeLeft: () => {
+        let nextPageIndex = ++currentPageIndex
+        if(nextPageIndex > this.MaxPage) nextPageIndex = 0;
+        this.currentPage.pageOut()
+        (this.currentPage = this.pages[nextPageIndex]).pageIn()
+      },
+      swipeRight: () => {
+        let nextPageIndex = --currentPageIndex
+        if(nextPageIndex < 0) nextPageIndex = this.MaxPage;
+        this.currentPage.pageOut()
+        (this.currentPage = this.pages[nextPageIndex]).pageIn()
+      }
     });
   }
 }
