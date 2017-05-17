@@ -1,3 +1,4 @@
+import $ from './$'
 import './class'
 
-export default from './$'
+export default $

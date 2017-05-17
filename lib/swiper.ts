@@ -2,8 +2,11 @@ import $ from './dom-tils';
 
 const LEFT = 'Left', RIGHT = 'Right', UP = 'Up', DOWN = 'Down';
 
-export default function (el, fn, callback) {
-  callback = callback || {};
+export default function (el, fn, callback = {
+  touchstart: null,
+  touchmove: null,
+  touchend: null
+}) {
   var touchInfo;
   $(el).on('touchstart', function(evt) {
     callback.touchstart && callback.touchstart();

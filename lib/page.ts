@@ -4,7 +4,7 @@ import Swiper from './swiper'
 const Body = document.body
 
 class Page {
-  private config = {}
+  private config
   constructor(private page) {
     this.init()
   }
@@ -33,9 +33,7 @@ export default class Pageit {
     this.init()
   }
   init() {
-    this.pageEls.forEach((el) => {
-      this.pages.push(new Page(el))
-    })
+    this.pageEls.forEach(el => this.pages.push(new Page(el)))
     this.run()
   }
   run() {
@@ -43,13 +41,13 @@ export default class Pageit {
     this.MaxPage = this.pages.length
     Swiper(this.container, {
       swipeLeft: () => {
-        let nextPageIndex = ++currentPageIndex
+        let nextPageIndex = ++this.currentPageIndex
         if(nextPageIndex > this.MaxPage) nextPageIndex = 0;
         this.currentPage.pageOut()
         (this.currentPage = this.pages[nextPageIndex]).pageIn()
       },
       swipeRight: () => {
-        let nextPageIndex = --currentPageIndex
+        let nextPageIndex = --this.currentPageIndex
         if(nextPageIndex < 0) nextPageIndex = this.MaxPage;
         this.currentPage.pageOut()
         (this.currentPage = this.pages[nextPageIndex]).pageIn()

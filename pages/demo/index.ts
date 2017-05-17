@@ -1,6 +1,5 @@
-import $ from './dom-tils';
+import Pageit from '../../lib/page'
 
 export default function Demo() {
-  console.error('Demo')
-  const body = $('body')
+  const p = new Pageit('.page')
 }

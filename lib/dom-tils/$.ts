@@ -1,15 +1,19 @@
 const Body = document.body
 
+export default function(selector, context?) {
+  return new $(selector, context)
+}
+
 export class $ {
-  private cached = {}
-  public static fn = $.prototype
-  public extend(name, fn) {
-    $[name] = fn
-  }
-  public support(key) {
+  public static support(key) {
     return key in Body
   }
-  constructor(private selector, private context) {
+  public static extend = function(name, fn) {
+    if(!!name && !!fn) this.prototype[name] = fn
+  }
+  private cached = {}
+  private length = 0
+  constructor(private selector, private context:any = Body) {
     let elements = null
     if(selector.nodeType === 1) {
       elements = [selector]
@@ -26,7 +30,7 @@ export class $ {
     this.length = elements.length || 0;
   }
   item(key) {
-    return catched[key] || (cached[key] = new $(this[+key] || this[0]))
+    return this.cached[key] || (this.cached[key] = new $(this[+key] || this[0]))
   }
   forEach(fn, context) {
     const _fn = fn.bind(context || this)
@@ -34,8 +38,7 @@ export class $ {
       _fn(this[k], k)
     }
   }
-}
-
-export default function(selector, context) {
-  return new $(selector, context)
+  on(name, fn) {
+    return this
+  }
 }
