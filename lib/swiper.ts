@@ -27,7 +27,6 @@ export default function (el, fn, callback = {
     dir && typeof fn['swipe' + dir] === 'function' && fn['swipe' + dir]();
     touchInfo = {};
   }).on('touchmove', function(evt) {
-    evt.preventDefault();
     evt.stopPropagation();
     callback.touchmove && callback.touchmove()
   })

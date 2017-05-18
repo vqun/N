@@ -32,13 +32,25 @@ export class $ {
   item(key) {
     return this.cached[key] || (this.cached[key] = new $(this[+key] || this[0]))
   }
-  forEach(fn, context) {
+  forEach(fn, context?) {
     const _fn = fn.bind(context || this)
-    for(let k = this.length; k--;) {
-      _fn(this[k], k)
-    }
+    for(let k = 0, l = this.length; k < l;) _fn(this[k], k++)
   }
-  on(name, fn) {
+  map(fn, context?) {
+    const _fn = fn.bind(context || this)
+    let ret = []
+    for(let k = 0, l = this.length; k < l;) ret.push(_fn(this[k], k++));
+    return ret
+  }
+  // Passive Event
+  on(name, fn, useCapture = false) {
+    if($.support('addEventListener')) {
+      this.forEach(el => el.addEventListener(name, fn.bind(el), useCapture))
+    } else if($.support('attachEvent')) {
+      this.forEach(el => el.attachEvent(`on${name}`, fn.bind(el), useCapture));
+    } else {
+      this.forEach(el => el[`on${name}`] = fn.bind(el));
+    }
     return this
   }
 }

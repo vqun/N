@@ -54,7 +54,8 @@ const baseConfig = {
     new CopyWebpackPlugin([{
       from: '**/*.html'
     }])
-  ]
+  ],
+  devtool: 'eval-source-map'
 };
 
 module.exports = (function() {

@@ -9,16 +9,16 @@ class Page {
     this.init()
   }
   init() {
-    const { name, o, i } = this.page.dataset
+    const { name, o, i } = this.page.data()[0]
     this.config = { name, o, i }
   }
   pageIn() {
     const { o, i } = this.config;
-    this.page.swapClass(o, i)
+    this.page.swapClass(o, i).show()
   }
   pageOut() {
     const { o, i } = this.config;
-    this.page.swapClass(i, o)
+    this.page.swapClass(i, o).hide()
   }
 }
 
@@ -27,31 +27,37 @@ export default class Pageit {
   private pages = []
   private currentPage = null
   private currentPageIndex = 0
-  private MaxPage = 0
+  private MaxPageIndex = 0
   constructor(el, private container = Body) {
     this.pageEls = $(el, this.container)
     this.init()
   }
   init() {
-    this.pageEls.forEach(el => this.pages.push(new Page(el)))
+    const that = this
+    this.pageEls.forEach(function(el, k) {
+      !!el.dataset && that.pages.push(new Page(this.item(k)))
+    }, this.pageEls)
     this.run()
   }
   run() {
     this.currentPage = this.pages[0]
-    this.MaxPage = this.pages.length
+    this.MaxPageIndex = this.pages.length - 1
     Swiper(this.container, {
       swipeLeft: () => {
         let nextPageIndex = ++this.currentPageIndex
-        if(nextPageIndex > this.MaxPage) nextPageIndex = 0;
-        this.currentPage.pageOut()
-        (this.currentPage = this.pages[nextPageIndex]).pageIn()
+        if(nextPageIndex > this.MaxPageIndex) nextPageIndex = 0;
+        this.currentPage.pageOut();
+        (this.currentPage = this.pages[nextPageIndex]).pageIn();
+        this.currentPageIndex = nextPageIndex
       },
       swipeRight: () => {
         let nextPageIndex = --this.currentPageIndex
-        if(nextPageIndex < 0) nextPageIndex = this.MaxPage;
-        this.currentPage.pageOut()
-        (this.currentPage = this.pages[nextPageIndex]).pageIn()
+        if(nextPageIndex < 0) nextPageIndex = this.MaxPageIndex;
+        this.currentPage.pageOut();
+        (this.currentPage = this.pages[nextPageIndex]).pageIn();
+        this.currentPageIndex = nextPageIndex
       }
     });
+    this.currentPage.pageIn()
   }
 }
