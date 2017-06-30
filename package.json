@@ -9,15 +9,20 @@
     "webpack": ">=2.0.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "`npm bin`/webpack --watch",
+    "build": "`npm bin`/webpack"
   },
   "private": true,
   "dependencies": {
+    "animejs": "^2.0.2",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.0.1",
-    "c-loader": "^0.4.0",
+    "awesome-typescript-loader": "^3.2.1",
+    "browser-sync": "^2.18.12",
+    "browser-sync-webpack-plugin": "^1.1.4",
+    "c-loader": ">=0.8.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.1",
     "extract-text-webpack-plugin": "^2.1.0",
@@ -26,8 +31,7 @@
     "less-loader": "^4.0.3",
     "postcss-loader": "^2.0.0",
     "style-loader": "^0.17.0",
-    "ts-loader": "^2.0.3",
-    "typescript": "^2.3.2",
+    "typescript": "^2.4.1",
     "url-loader": "^0.5.8",
     "webpack": "^2.3.3"
   }

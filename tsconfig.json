@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "module": "none",
     "moduleResolution": "node",
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "allowJs": true
+    "allowJs": true,
+    "target": "ES3"
   },
   "include": [
     "pages/**/*",

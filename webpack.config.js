@@ -2,6 +2,7 @@ const path = require('path'), fs = require('fs')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 
 const styleExtractor = new ExtractTextPlugin({ filename: 'styles/[name].css?v=[contenthash:8]', allChunks: true })
 const RESOLVED_EXTENSIONS = ['.ts', '.tsx', '.js', '.json']
@@ -18,7 +19,7 @@ const baseConfig = {
       {
         test: /\.tsx?$/,
         use: [
-          'ts-loader',
+          'awesome-typescript-loader',
           {
             loader: 'c-loader',
             options: {
@@ -32,7 +33,7 @@ const baseConfig = {
       {
         test: /\.(css|less)$/,
         loader: styleExtractor.extract({
-          use: 'css-loader!postcss-loader!less-loader',
+          use: 'css-loader?sourceMap!postcss-loader!less-loader',
           fallback: "style-loader"
         })
       },
@@ -49,13 +50,27 @@ const baseConfig = {
     ]
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+    }),
     styleExtractor,
     new CopyWebpackPlugin([{
       from: '**/*.html'
-    }])
+    }]),
+    new BrowserSyncPlugin({
+      host: 'localhost',
+      port: 9000,
+      server: { baseDir: ['dist'] },
+      open: false,
+      ui: {
+        port: 9090,
+        weinre: {
+          port: 9091
+        }
+      }
+    })
   ],
-  devtool: 'eval-source-map'
+  devtool: 'source-map'
 };
 
 module.exports = (function() {
