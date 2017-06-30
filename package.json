@@ -9,8 +9,8 @@
     "webpack": ">=2.0.0"
   },
   "scripts": {
-    "start": "`npm bin`/webpack --watch",
-    "build": "`npm bin`/webpack"
+    "start": "`npm bin`/webpack --watch --env.build=false",
+    "build": "`npm bin`/webpack --env.build"
   },
   "private": true,
   "dependencies": {

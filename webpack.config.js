@@ -73,7 +73,14 @@ const baseConfig = {
   devtool: 'source-map'
 };
 
-module.exports = (function() {
+const parseBool = v => v !== 'false';
+
+module.exports = function(env) {
+  const isBuild = parseBool(env.build)
+  if(isBuild) {
+    baseConfig.output.path = path.resolve(__dirname, 'build')
+    baseConfig.devtool = ''
+  }
   const configs = [], base = path.resolve(__dirname, 'pages');
   const directories = fs.readdirSync(base);
   directories.forEach(function(dir) {
@@ -93,7 +100,7 @@ module.exports = (function() {
     }
   })
   return configs
-})();
+};
 
 function produceEntries(base, prefix = '') {
   const files = fs.readdirSync(base);
@@ -108,6 +115,6 @@ function produceEntries(base, prefix = '') {
 
 function createBaseConfig(out = '') {
   const config = Object.assign({}, baseConfig);
-  config.output = Object.assign({}, config.output, { path: path.resolve(__dirname, out ? `dist/${out}` : 'dist')})
+  config.output = Object.assign({}, config.output, { path: path.resolve(config.output.path, out) })
   return config
 }
