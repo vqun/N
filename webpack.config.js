@@ -33,7 +33,7 @@ const baseConfig = {
       {
         test: /\.(css|less)$/,
         loader: styleExtractor.extract({
-          use: 'css-loader?sourceMap!postcss-loader!less-loader',
+          use: 'css-loader?sourceMap&minimize!postcss-loader!less-loader',
           fallback: "style-loader"
         })
       },
