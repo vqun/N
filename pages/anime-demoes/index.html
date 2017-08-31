@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>AnimeJs Demoes</title>
+  <link rel="stylesheet" href="styles/index.css" />
+  <!-- <script type="text/javascript" src="assets/index.min.js" defer></script>  -->
+</head>
+<body>
+  <style>
+    @keyframes a {
+      50% {
+        transform: translateY(10px) scale(1.2);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+      }
+    }
+    @keyframes b {
+      to {
+        left: 400px;
+      }
+    }
+    .cute-cube {
+      animation: a 150ms cubic-bezier(0.66, 0.15, 1, 0.66) infinite, b 2s steps(80);
+      animation-fill-mode: forwards;
+      transform-origin: bottom;
+      position: relative;
+      left: 0;
+      border-radius: 50%;
+    }
+  </style>
+  <div class="full" id="wrap">
+    <div class="cute-cube"></div>
+  </div>
+</body>
+</html>

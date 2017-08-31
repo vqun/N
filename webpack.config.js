@@ -9,10 +9,14 @@ const RESOLVED_EXTENSIONS = ['.ts', '.tsx', '.js', '.json']
 const baseConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'assets/[name].bundle.js'
+    filename: 'assets/[name].min.js'
   },
   resolve: {
-    extensions: RESOLVED_EXTENSIONS
+    extensions: RESOLVED_EXTENSIONS,
+    alias: ['pages', 'style-lib', 'lib'].reduce((prev, curr) => {
+      const alias = `@${curr}`
+      return Object.assign({}, prev, { [alias]: path.resolve(__dirname, curr) })
+    }, {})
   },
   module: {
     rules: [
@@ -28,7 +32,8 @@ const baseConfig = {
               module: 'import'
             }
           }
-        ]
+        ],
+        exclude: /node_modules/
       },
       {
         test: /\.(css|less)$/,
@@ -51,7 +56,10 @@ const baseConfig = {
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
+      sourceMap: true
+    }),
+    new webpack.DefinePlugin({
+      define: false
     }),
     styleExtractor,
     new CopyWebpackPlugin([{
@@ -93,10 +101,11 @@ module.exports = function(env) {
         }
       }))
     } else {
-      configs.push(Object.assign(createBaseConfig(dir), {
+      const entries = produceEntries(ctx)
+      !isEmptyObject(entries) && configs.push(Object.assign(createBaseConfig(dir), {
         context: ctx,
         entry: produceEntries(ctx)
-      }))
+      }));
     }
   })
   return configs
@@ -117,4 +126,15 @@ function createBaseConfig(out = '') {
   const config = Object.assign({}, baseConfig);
   config.output = Object.assign({}, config.output, { path: path.resolve(config.output.path, out) })
   return config
+}
+
+function isEmptyObject(o) {
+  let ieo = true
+  for(const k in o) {
+    if(o.hasOwnProperty(k)) {
+      ieo = false;
+      break;
+    }
+  }
+  return ieo
 }
